@@ -1,0 +1,111 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Pixelify Sans", sans-serif;
+  font-weight: 700;
+}
+
+:root {
+  --grey: rgb(40, 40, 40);
+  --darkgrey: rgb(30, 30, 30);
+  --white: rgb(240, 240, 240);
+}
+
+body {
+  height: 100vh;
+  background-color: var(--grey);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  font-size: 70px;
+  margin-bottom: 20px;
+  color: var(--white);
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+}
+
+#score {
+  display: none;
+  font-size: 30px;
+  color: var(--white);
+}
+
+h3 {
+  font-size: 30px;
+  color: var(--white);
+}
+
+main {
+  min-width: 500px;
+  min-height: 500px;
+  background-color: var(--darkgrey);
+  border: 10px solid var(--white);
+  position: relative;
+}
+
+#start {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#start-button {
+  width: 100px;
+  height: 50px;
+  font-size: 25px;
+  border: 2px solid black;
+}
+
+#player-box {
+  width: 50px;
+  height: 50px;
+  background-color: var(--white);
+  display: none;
+  position: absolute;
+  bottom: 6.5px;
+  left: 5px;
+}
+
+#results {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#gameover {
+  display: none;
+  font-size: 50px;
+  color: red;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+}
+
+#reset-button {
+  display: none;
+  margin-top: 12px;
+  width: 100px;
+  height: 50px;
+  font-size: 25px;
+  border: 2px solid black;
+}
+
+footer {
+  width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
