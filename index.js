@@ -3,7 +3,8 @@ const hideButton = () => {
   document.getElementById("start-button").style.display = "none";
   document.getElementById("score").style.display = "block";
   document.getElementById("player-box").style.display = "block";
-  window.requestAnimationFrame(gameLoop); 
+  window.requestAnimationFrame(gameLoop);
+  lastRemoved = Date.now() + Math.random() * (maxSpawnGap - minSpawnGap) + minSpawnGap; 
 };
 
 // Invokes hideButton function on start button click
@@ -11,11 +12,13 @@ document.getElementById("start-button").addEventListener("click", hideButton);
 
 const resetButton = () => {
   score = 0;
+  document.getElementById("score").innerHTML = "SCORE: 0"
   document.getElementById("gameover").style.display = "none";
   document.getElementById("reset-button").style.display = "none";
   document.getElementById("player-box").style.display = "block";
   isGameOver = false;
   window.requestAnimationFrame(gameLoop);
+  lastRemoved = Date.now() + Math.random() * (maxSpawnGap - minSpawnGap) + minSpawnGap;
 };
 
 document.getElementById("reset-button").addEventListener("click", resetButton);
@@ -26,6 +29,10 @@ let groundPosition = 6.5;
 let position = groundPosition;
 let isJumping = false;
 
+// frame rate independent motion //
+let dt; //frame time difference
+let lastTime = performance.now();
+
 const jumpPlayer = () => {
   if (!isJumping) {
     isJumping = true;
@@ -35,7 +42,7 @@ const jumpPlayer = () => {
 
 const jumpUp = () => {
   if (position < jumpHeight) {
-    position += 5;
+    position += 800 * dt; //units per second
     playerBox.style.bottom = position + "px";
     window.requestAnimationFrame(jumpUp);
   } else {
@@ -45,7 +52,7 @@ const jumpUp = () => {
 
 const fallDown = () => {
   if (position > groundPosition) {
-    position -= 3;
+    position -= 500 * dt; //units per second
     playerBox.style.bottom = position + "px";
     window.requestAnimationFrame(fallDown);
   } else {
@@ -54,7 +61,7 @@ const fallDown = () => {
 };
 
 document.addEventListener("keydown", function(event) {
-  if (event.key === " " || event.code === "Space") {
+  if ((event.key === " " || event.code === "Space") && !isGameOver) {
     jumpPlayer();
   };
 });
@@ -76,7 +83,7 @@ class Obstacle {
   };
 
   update () {
-    this.right += 2;
+    this.right += 350 * dt; // Obstacle units per second
     this.element.style.right = this.right + 'px';
   };
 
@@ -109,6 +116,10 @@ const gameLoop = () => {
   if (isGameOver) {
     return;
   };
+
+  let now = performance.now();
+  dt = (now - lastTime) / 1000.0; // calculate delta time and convert it to seconds
+  lastTime = now;
   
   window.requestAnimationFrame(gameLoop);
 
@@ -135,7 +146,9 @@ const gameLoop = () => {
     if(obstacles[i].isOffScreen()) {
       obstacles[i].element.remove();
       obstacles.splice(i, 1);
-      document.getElementById("score").innerHTML = `SCORE: ${score += 1}`
+      if (!isGameOver) {
+        document.getElementById("score").innerHTML = `SCORE: ${score += 1}`;
+      };
     };
   };
 };
